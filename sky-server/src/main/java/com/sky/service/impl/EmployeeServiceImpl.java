@@ -1,5 +1,4 @@
 package com.sky.service.impl;
-
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.sky.constant.MessageConstant;
@@ -65,6 +64,10 @@ public class EmployeeServiceImpl implements EmployeeService {
         return employee;
     }
 
+    /**
+     *
+     * @param employeeDTO
+     */
     @Override
     public void save(EmployeeDTO employeeDTO) {
         Employee employee = new Employee();
@@ -79,12 +82,31 @@ public class EmployeeServiceImpl implements EmployeeService {
         employeeMapper.insert(employee);
     }
 
+    /**
+     *
+     * @param employeePageQueryDTO
+     * @return
+     */
     @Override
     public PageResult pageQuery(EmployeePageQueryDTO employeePageQueryDTO) {
         PageHelper.startPage(employeePageQueryDTO.getPage(), employeePageQueryDTO.getPageSize());
         List<Employee> list = employeeMapper.pageQuery(employeePageQueryDTO);
         PageInfo<Employee> pageInfo = new PageInfo<>(list);
         return new PageResult(pageInfo.getSize(), pageInfo.getList());
+    }
+
+    /**
+     *
+     * @param status
+     * @param id
+     */
+    @Override
+    public void enableOrDisable(Integer status, Long id) {
+        Employee employee = Employee.builder()
+                        .status(status)
+                        .id(id)
+                        .build();
+        employeeMapper.update(employee);
     }
 
 }
