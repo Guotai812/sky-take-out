@@ -5,21 +5,18 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.sky.constant.MessageConstant;
 import com.sky.constant.StatusConstant;
+import com.sky.context.BaseContext;
 import com.sky.dto.DishDTO;
 import com.sky.dto.DishPageQueryDTO;
 import com.sky.entity.Dish;
 import com.sky.entity.DishFlavor;
-
-
 import com.sky.exception.DeletionNotAllowedException;
 import com.sky.mapper.DishFlavorMapper;
 import com.sky.mapper.DishMapper;
 import com.sky.mapper.SetMealDishMapper;
-
 import com.sky.result.PageResult;
 import com.sky.service.DishService;
 import com.sky.vo.DishVO;
-import net.sf.jsqlparser.statement.select.Offset;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -106,5 +103,13 @@ public class DishServiceImpl implements DishService {
             }
             dishFlavorMapper.insertBatch(flavors);
         }
+    }
+
+    @Override
+    public void status(Integer status,Long id) {
+        Dish dish = new Dish();
+        dish.setStatus(status);
+        dish.setId(id);
+        dishMapper.update(dish);
     }
 }
