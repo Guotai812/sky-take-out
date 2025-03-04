@@ -1,7 +1,10 @@
 package com.sky.mapper;
 
+import com.sky.annotation.AutoFill;
 import com.sky.dto.SetmealPageQueryDTO;
 import com.sky.entity.Setmeal;
+import com.sky.enumeration.OperationType;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
@@ -19,4 +22,7 @@ public interface SetMealMapper {
     Integer countByCategoryId(Long id);
 
     List<Setmeal> page(SetmealPageQueryDTO queryDTO);
+
+    @AutoFill(OperationType.INSERT)
+    void insert(Setmeal setmeal);
 }
