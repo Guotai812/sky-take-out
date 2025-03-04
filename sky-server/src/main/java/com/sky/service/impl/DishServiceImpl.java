@@ -19,6 +19,7 @@ import com.sky.mapper.SetMealDishMapper;
 import com.sky.result.PageResult;
 import com.sky.service.DishService;
 import com.sky.vo.DishVO;
+import net.sf.jsqlparser.statement.select.Offset;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -80,5 +81,30 @@ public class DishServiceImpl implements DishService {
 
         dishMapper.deleteBatch(ids);
         dishFlavorMapper.deleteBatch(ids);
+    }
+
+    @Override
+    public DishVO findByIdWithFlavors(Long id) {
+        Dish dish = dishMapper.queryById(id);
+        List<DishFlavor> dishFlavors = dishFlavorMapper.queryById(id);
+        DishVO dishVO = new DishVO();
+        BeanUtils.copyProperties(dish, dishVO);
+        dishVO.setFlavors(dishFlavors);
+        return dishVO;
+    }
+
+    @Override
+    public void update(DishDTO dishDTO) {
+        Dish dish = new Dish();
+        BeanUtils.copyProperties(dishDTO, dish);
+        dishMapper.update(dish);
+        dishFlavorMapper.deleteById(dishDTO.getId());
+        List<DishFlavor> flavors = dishDTO.getFlavors();
+        if (flavors != null && flavors.size() > 0) {
+            for (DishFlavor f : flavors) {
+                f.setDishId(dishDTO.getId());
+            }
+            dishFlavorMapper.insertBatch(flavors);
+        }
     }
 }
