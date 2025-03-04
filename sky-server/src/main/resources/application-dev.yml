@@ -7,5 +7,5 @@ sky:
     username: root
     password: 1Shicaomoni
   upload:
-    host-path: 192.168.20.11:8080/images
-    upload-path: /Users/mac/Library/CloudStorage/GoogleDrive-guotaixiao87@gmail.com/My Drive/material/苍穹外卖/material/resourse/资料/day01/后端初始工程/sky-take-out/sky-server/src/main/resources/static/images
+    host-path: http://192.168.20.11:8080/images/
+    upload-path: /Users/mac/Library/CloudStorage/GoogleDrive-guotaixiao87@gmail.com/My Drive/material/苍穹外卖/material/resourse/资料/day01/后端初始工程/sky-take-out/sky-server/src/main/resources/static/images/
