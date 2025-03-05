@@ -11,6 +11,8 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("admin/setmeal")
 @Api(tags = "套餐相关接口")
@@ -50,6 +52,13 @@ public class SetMealController {
     @ApiOperation("修改套餐")
     public Result update(@RequestBody SetmealDTO setmealDTO){
         setMealService.update(setmealDTO);
+        return Result.success();
+    }
+
+    @DeleteMapping
+    @ApiOperation("删除套餐")
+    public Result delete(@RequestParam List<Long> ids){
+        setMealService.delete(ids);
         return Result.success();
     }
 }

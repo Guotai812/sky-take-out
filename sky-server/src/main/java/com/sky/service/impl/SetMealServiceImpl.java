@@ -79,4 +79,10 @@ public class SetMealServiceImpl implements SetMealService {
         }
         setMealDishMapper.insertBatch(setMealDishes);
     }
+
+    @Override
+    @Transactional
+    public void delete(List<Long> ids) {
+
+    }
 }

@@ -39,6 +39,6 @@ public interface DishMapper {
     void update(Dish dish);
 
 
-    @Select("select * from dish where category_id = #{id}")
+    @Select("select * from dish where category_id = #{id} and status = 1")
     List<Dish> queryByCategoryId(Long id);
 }
