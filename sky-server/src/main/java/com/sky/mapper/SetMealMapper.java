@@ -26,6 +26,7 @@ public interface SetMealMapper {
     @AutoFill(OperationType.INSERT)
     void insert(Setmeal setmeal);
 
+    @AutoFill(OperationType.UPDATE)
     void update(Setmeal setmeal);
 
     @Select("select * from setmeal where id = #{id}")

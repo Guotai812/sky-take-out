@@ -1,9 +1,6 @@
 package com.sky.mapper;
 import com.sky.entity.SetmealDish;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -21,4 +18,9 @@ public interface SetMealDishMapper {
 
     @Select("select * from setmeal_dish where setmeal_id = #{id}")
     List<SetmealDish> query(Long id);
+
+    @Delete("delete from setmeal_dish where setmeal_id = #{id}")
+    void deleteBySetMealId(Long id);
+
+    void insertBatch(List<SetmealDish> setMealDishes);
 }

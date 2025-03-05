@@ -13,4 +13,6 @@ public interface SetMealService {
     void status(Integer status, Long id);
 
     SetmealVO query(Long id);
+
+    void update(SetmealDTO setmealDTO);
 }
