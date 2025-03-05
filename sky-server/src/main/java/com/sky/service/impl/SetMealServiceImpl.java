@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -83,6 +84,10 @@ public class SetMealServiceImpl implements SetMealService {
     @Override
     @Transactional
     public void delete(List<Long> ids) {
+        //根据Id删除套餐
+        setmealMapper.deleteBatch(ids);
 
+        //根据setmealid删除菜品
+        setMealDishMapper.deleteBatchBySetMealId(ids);
     }
 }
