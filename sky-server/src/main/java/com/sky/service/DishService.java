@@ -24,4 +24,6 @@ public interface DishService {
     void status(Integer status, Long id);
 
     List<Dish> queryByCategoryId(Long id);
+
+    List<DishVO> listWithFlavor(Dish dish);
 }
