@@ -26,4 +26,5 @@ public interface DishService {
     List<Dish> queryByCategoryId(Long id);
 
     List<DishVO> listWithFlavor(Dish dish);
+
 }
