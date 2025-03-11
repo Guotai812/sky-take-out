@@ -36,7 +36,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         if (list != null && !list.isEmpty()) {
             ShoppingCart item = list.get(0);
             item.setNumber(item.getNumber() + 1);
-            shoppingCartMapper.updateNumberById(item);
+            shoppingCartMapper.update(item);
         } else {
             Long dishId = shoppingCart.getDishId();
             shoppingCart.setCreateTime(LocalDateTime.now());
@@ -65,6 +65,23 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public void delete() {
-        shoppingCartMapper.delete(BaseContext.getCurrentId());
+        ShoppingCart shoppingCart = new ShoppingCart();
+        shoppingCart.setUserId(BaseContext.getCurrentId());
+        shoppingCartMapper.delete(shoppingCart);
+    }
+
+    @Override
+    public void sub(ShoppingCartDTO shoppingCartDTO) {
+        ShoppingCart item = new ShoppingCart();
+        BeanUtils.copyProperties(shoppingCartDTO, item);
+        item.setUserId(BaseContext.getCurrentId());
+        List<ShoppingCart> list = shoppingCartMapper.list(item);
+        item = list.get(0);
+        if (item.getNumber() == 1) {
+            shoppingCartMapper.delete(item);
+        } else {
+            item.setNumber(item.getNumber() - 1);
+            shoppingCartMapper.update(item);
+        }
     }
 }
