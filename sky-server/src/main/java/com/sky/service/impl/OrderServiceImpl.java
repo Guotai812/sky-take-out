@@ -3,6 +3,7 @@ package com.sky.service.impl;
 
 import com.sky.constant.MessageConstant;
 import com.sky.context.BaseContext;
+import com.sky.dto.OrdersPaymentDTO;
 import com.sky.dto.OrdersSubmitDTO;
 import com.sky.entity.AddressBook;
 import com.sky.entity.OrderDetail;
@@ -15,9 +16,11 @@ import com.sky.mapper.OrderDetailMapper;
 import com.sky.mapper.OrderMapper;
 import com.sky.mapper.ShoppingCartMapper;
 import com.sky.service.OrderService;
+import com.sky.vo.OrderPaymentVO;
 import com.sky.vo.OrderSubmitVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -70,8 +73,8 @@ public class OrderServiceImpl implements OrderService {
             orderDetail.setId(null);
             orderDetail.setOrderId(orderId);
             orderDetails.add(orderDetail);
-            orderDetailMapper.insertBatch(orderDetails);
         }
+        orderDetailMapper.insertBatch(orderDetails);
 
         shoppingCartMapper.delete(cart);
 
@@ -81,5 +84,16 @@ public class OrderServiceImpl implements OrderService {
         orderSubmitVO.setOrderTime(orders.getOrderTime());
         orderSubmitVO.setOrderAmount(orders.getAmount());
         return orderSubmitVO;
+    }
+
+    @Override
+    public OrderPaymentVO pay(OrdersPaymentDTO ordersPaymentDTO) {
+//        更新订单数据 支付方式 支付状态
+        Orders orders = new Orders();
+        orders.setPayStatus(Orders.PAID);
+        orders.setNumber(ordersPaymentDTO.getOrderNumber());
+        orders.setUserId(BaseContext.getCurrentId());
+        orderMapper.update(orders);
+        return new OrderPaymentVO();
     }
 }
