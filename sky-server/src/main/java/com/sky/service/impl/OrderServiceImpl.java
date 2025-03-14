@@ -1,8 +1,11 @@
 package com.sky.service.impl;
 
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.sky.constant.MessageConstant;
 import com.sky.context.BaseContext;
+import com.sky.dto.OrdersPageQueryDTO;
 import com.sky.dto.OrdersPaymentDTO;
 import com.sky.dto.OrdersSubmitDTO;
 import com.sky.entity.AddressBook;
@@ -15,12 +18,13 @@ import com.sky.mapper.AddressBookMapper;
 import com.sky.mapper.OrderDetailMapper;
 import com.sky.mapper.OrderMapper;
 import com.sky.mapper.ShoppingCartMapper;
+import com.sky.result.PageResult;
 import com.sky.service.OrderService;
 import com.sky.vo.OrderPaymentVO;
 import com.sky.vo.OrderSubmitVO;
+import com.sky.vo.OrderVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -88,12 +92,32 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderPaymentVO pay(OrdersPaymentDTO ordersPaymentDTO) {
-//        更新订单数据 支付方式 支付状态
         Orders orders = new Orders();
         orders.setPayStatus(Orders.PAID);
+        orders.setStatus(Orders.TO_BE_CONFIRMED);
         orders.setNumber(ordersPaymentDTO.getOrderNumber());
         orders.setUserId(BaseContext.getCurrentId());
         orderMapper.update(orders);
         return new OrderPaymentVO();
+    }
+
+    @Override
+    public PageResult historyOrder(Integer page, Integer pageSize, Integer status) {
+        PageHelper.startPage(page, pageSize);
+        OrdersPageQueryDTO queryDTO = new OrdersPageQueryDTO();
+        queryDTO.setUserId(BaseContext.getCurrentId());
+        queryDTO.setStatus(status);
+        List<Orders> orders = orderMapper.pageQuery(queryDTO);
+        PageInfo<Orders> pageInfo = new PageInfo<>(orders);
+        orders = pageInfo.getList();
+        List<OrderVO> list = new ArrayList<>();
+        for (Orders order : orders) {
+            OrderVO orderVO = new OrderVO();
+            BeanUtils.copyProperties(order, orderVO);
+            List<OrderDetail> details = orderDetailMapper.listById(order.getId());
+            orderVO.setOrderDetailList(details);
+            list.add(orderVO);
+        }
+        return new PageResult(pageInfo.getTotal(), list);
     }
 }
