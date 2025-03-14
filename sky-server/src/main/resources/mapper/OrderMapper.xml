@@ -72,7 +72,10 @@
             <if test="tablewareNumber != null"> tableware_number = #{tablewareNumber}, </if>
             <if test="tablewareStatus != null"> tableware_status = #{tablewareStatus}, </if>
         </set>
-        where number = #{number} and user_id = #{userId}
+        <where>
+            <if test="number != null and number != ''"> number = #{number}</if>
+            and id = #{id}
+        </where>
     </update>
     <select id="pageQuery" resultType="Orders">
         select * from orders

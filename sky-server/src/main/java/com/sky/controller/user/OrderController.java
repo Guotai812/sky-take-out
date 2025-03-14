@@ -8,9 +8,12 @@ import com.sky.result.Result;
 import com.sky.service.OrderService;
 import com.sky.vo.OrderPaymentVO;
 import com.sky.vo.OrderSubmitVO;
+import com.sky.vo.OrderVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.poi.ss.formula.functions.Odd;
+import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,5 +46,15 @@ public class OrderController {
         return Result.success(pageResult);
     }
 
+    @GetMapping("/orderDetail/{id}")
+    public Result<OrderVO> orderDetail(@PathVariable Long id) {
+        OrderVO orderVO = orderService.orderDetail(id);
+        return Result.success(orderVO);
+    }
 
+    @PutMapping("cancel/{id}")
+    public Result cancel (@PathVariable Long id) {
+        orderService.cancel(id);
+        return Result.success();
+    }
 }

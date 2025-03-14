@@ -120,4 +120,25 @@ public class OrderServiceImpl implements OrderService {
         }
         return new PageResult(pageInfo.getTotal(), list);
     }
+
+    @Override
+    public OrderVO orderDetail(Long id) {
+        Orders order = orderMapper.queryById(id);
+        OrderVO orderVO = new OrderVO();
+        BeanUtils.copyProperties(order, orderVO);
+        List<OrderDetail> orderDetails = orderDetailMapper.listById(order.getId());
+        orderVO.setOrderDetailList(orderDetails);
+        return orderVO;
+    }
+
+    @Override
+    public void cancel(Long id) {
+        Orders order = new Orders();
+        order.setId(id);
+        order.setStatus(Orders.CANCELLED);
+        order.setUserId(BaseContext.getCurrentId());
+        order.setCancelReason("用户取消");
+        order.setCancelTime(LocalDateTime.now());
+        orderMapper.update(order);
+    }
 }
