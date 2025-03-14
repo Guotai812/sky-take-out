@@ -141,4 +141,18 @@ public class OrderServiceImpl implements OrderService {
         order.setCancelTime(LocalDateTime.now());
         orderMapper.update(order);
     }
+
+    @Override
+    public void repetition(Long id) {
+        List<OrderDetail> orderDetails = orderDetailMapper.listById(id);
+        List<ShoppingCart> carts = new ArrayList<>();
+        for (OrderDetail orderDetail : orderDetails) {
+            ShoppingCart cart = new ShoppingCart();
+            BeanUtils.copyProperties(orderDetail, cart);
+            cart.setCreateTime(LocalDateTime.now());
+            carts.add(cart);
+            cart.setUserId(BaseContext.getCurrentId());
+        }
+        shoppingCartMapper.insertBatch(carts);
+    }
 }

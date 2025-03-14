@@ -74,7 +74,8 @@
         </set>
         <where>
             <if test="number != null and number != ''"> number = #{number}</if>
-            and id = #{id}
+            <if test="id != null">and id = #{id} </if>
+            <if test="userId !=null">and user_id = #{userId}</if>
         </where>
     </update>
     <select id="pageQuery" resultType="Orders">

@@ -12,8 +12,6 @@ import com.sky.vo.OrderVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.poi.ss.formula.functions.Odd;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -47,14 +45,22 @@ public class OrderController {
     }
 
     @GetMapping("/orderDetail/{id}")
+    @ApiOperation("查看订单详情")
     public Result<OrderVO> orderDetail(@PathVariable Long id) {
         OrderVO orderVO = orderService.orderDetail(id);
         return Result.success(orderVO);
     }
 
     @PutMapping("cancel/{id}")
+    @ApiOperation("取消订单")
     public Result cancel (@PathVariable Long id) {
         orderService.cancel(id);
+        return Result.success();
+    }
+
+    @PostMapping("repetition/{id}")
+    public Result repetition(@PathVariable Long id) {
+        orderService.repetition(id);
         return Result.success();
     }
 }
