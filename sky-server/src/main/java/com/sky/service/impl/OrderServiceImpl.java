@@ -29,6 +29,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.PriorityQueue;
@@ -194,8 +195,23 @@ public class OrderServiceImpl implements OrderService {
         BeanUtils.copyProperties(ordersCancelDTO, orders);
         orders.setCancelTime(LocalDateTime.now());
         orders.setStatus(Orders.CANCELLED);
-        Integer payStatus = orderMapper.queryById(orders.getId()).getPayMethod();
+        Integer payStatus = orderMapper.queryById(orders.getId()).getPayStatus();
         if (payStatus == Orders.PAID) orders.setPayStatus(Orders.REFUND);
+        orderMapper.update(orders);
+    }
+
+    @Override
+    public void reject(OrdersRejectionDTO ordersRejectionDTO) {
+        Orders orders = new Orders();
+        BeanUtils.copyProperties(ordersRejectionDTO, orders);
+        Integer status = orderMapper.queryById(orders.getId()).getStatus();
+        Integer payStatus = orderMapper.queryById(orders.getId()).getPayMethod();
+        if (status != Orders.TO_BE_CONFIRMED) {
+            throw new OrderBusinessException(MessageConstant.ORDER_STATUS_ERROR);
+        }
+        if (payStatus == Orders.PAID) orders.setPayStatus(Orders.REFUND);
+        orders.setStatus(Orders.CANCELLED);
+        orders.setCancelTime(LocalDateTime.now());
         orderMapper.update(orders);
     }
 }

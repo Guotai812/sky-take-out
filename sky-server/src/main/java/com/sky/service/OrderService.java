@@ -27,4 +27,6 @@ public interface OrderService {
     OrderReportVO statistics();
 
     void cancel (OrdersCancelDTO ordersCancelDTO);
+
+    void reject(OrdersRejectionDTO ordersRejectionDTO);
 }

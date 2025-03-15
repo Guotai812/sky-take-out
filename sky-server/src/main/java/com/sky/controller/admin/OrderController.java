@@ -58,4 +58,12 @@ public class OrderController {
         orderService.cancel(ordersCancelDTO);
         return Result.success();
     }
+
+    @PutMapping("rejection")
+    @ApiOperation("拒绝订单")
+    public Result cancel(@RequestBody OrdersRejectionDTO ordersRejectionDTO) {
+        orderService.reject(ordersRejectionDTO);
+        return Result.success();
+    }
+
 }
