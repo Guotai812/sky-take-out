@@ -155,4 +155,20 @@ public class OrderServiceImpl implements OrderService {
         }
         shoppingCartMapper.insertBatch(carts);
     }
+
+    @Override
+    public PageResult pageQuery(OrdersPageQueryDTO ordersPageQueryDTO) {
+        List<Orders> orders  = orderMapper.pageQueryAdmin(ordersPageQueryDTO);
+        List<OrderVO> list = new ArrayList<>();
+        for (Orders order : orders) {
+            OrderVO orderVO = new OrderVO();
+            BeanUtils.copyProperties(order, orderVO);
+            List<OrderDetail> orderDetails = orderDetailMapper.listById(order.getId());
+            orderVO.setOrderDishes(orderDetails.toString());
+            list.add(orderVO);
+        }
+        PageHelper.startPage(ordersPageQueryDTO.getPage(), ordersPageQueryDTO.getPageSize());
+        PageInfo<OrderVO> pageInfo = new PageInfo<>(list);
+        return new PageResult(pageInfo.getTotal(), list);
+    }
 }

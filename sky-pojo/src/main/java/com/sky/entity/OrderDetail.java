@@ -44,4 +44,9 @@ public class OrderDetail implements Serializable {
 
     //图片
     private String image;
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }
