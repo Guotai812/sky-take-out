@@ -1,5 +1,6 @@
 package com.sky.service;
 
+import com.sky.dto.OrdersConfirmDTO;
 import com.sky.dto.OrdersPageQueryDTO;
 import com.sky.dto.OrdersPaymentDTO;
 import com.sky.dto.OrdersSubmitDTO;
@@ -22,4 +23,6 @@ public interface OrderService {
     void repetition(Long id);
 
     PageResult pageQuery(OrdersPageQueryDTO ordersPageQueryDTO);
+
+    void confirm(OrdersConfirmDTO ordersConfirmDTO);
 }
