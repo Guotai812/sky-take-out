@@ -66,4 +66,17 @@ public class OrderController {
         return Result.success();
     }
 
+    @PutMapping("delivery/{id}")
+    @ApiOperation("派送")
+    public Result cancel(@PathVariable Long id) {
+        orderService.deliver(id);
+        return Result.success();
+    }
+
+    @PutMapping("complete/{id}")
+    @ApiOperation("完成")
+    public Result complete(@PathVariable Long id) {
+        orderService.complete(id);
+        return Result.success();
+    }
 }

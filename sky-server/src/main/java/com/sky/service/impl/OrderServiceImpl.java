@@ -214,4 +214,11 @@ public class OrderServiceImpl implements OrderService {
         orders.setCancelTime(LocalDateTime.now());
         orderMapper.update(orders);
     }
+
+    @Override
+    public void deliver(Long id) {
+        Orders orders = orderMapper.queryById(id);
+        orders.setStatus(Orders.DELIVERY_IN_PROGRESS);
+        orderMapper.update(orders);
+    }
 }
