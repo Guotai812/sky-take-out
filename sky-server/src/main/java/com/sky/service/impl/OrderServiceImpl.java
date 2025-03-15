@@ -97,6 +97,7 @@ public class OrderServiceImpl implements OrderService {
         orders.setStatus(Orders.TO_BE_CONFIRMED);
         orders.setNumber(ordersPaymentDTO.getOrderNumber());
         orders.setUserId(BaseContext.getCurrentId());
+        orders.setCheckoutTime(LocalDateTime.now());
         orderMapper.update(orders);
         return new OrderPaymentVO();
     }
