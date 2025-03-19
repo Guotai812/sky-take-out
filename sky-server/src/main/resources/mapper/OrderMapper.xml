@@ -45,7 +45,7 @@
                    #{tablewareStatus}
                );
     </insert>
-    <update id="update">
+    <update id="update" useGeneratedKeys="true" keyProperty="id">
         update orders
         <set>
             <if test="number != null and number != ''"> number = #{number}, </if>

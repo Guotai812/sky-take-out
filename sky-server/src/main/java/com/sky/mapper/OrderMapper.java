@@ -14,7 +14,7 @@ import java.util.List;
 public interface OrderMapper {
 
 
-    void update(Orders orders);
+    Integer update(Orders orders);
 
     void insert(Orders orders);
 
@@ -27,4 +27,10 @@ public interface OrderMapper {
 
     @Select("select count(if(status = 3, status, null)) confirmed, count(if(status = 4, status, null)) deleveryInPProcess from orders")
     OrderReportVO cout();
+
+    @Select("select * from orders where order_time < now() - interval 10 second and pay_status = 0")
+    List<Orders> queryTimeOut();
+
+    @Select("select * from orders where status = 4 and order_time < now() - interval 1 hour")
+    List<Orders> queryInDelivery();
 }

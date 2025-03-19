@@ -1,6 +1,7 @@
 package com.sky.service.impl;
 
 
+import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.sky.constant.MessageConstant;
@@ -23,6 +24,7 @@ import com.sky.vo.OrderPaymentVO;
 import com.sky.vo.OrderReportVO;
 import com.sky.vo.OrderSubmitVO;
 import com.sky.vo.OrderVO;
+import com.sky.websocket.WebSocketServer;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,9 +32,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.PriorityQueue;
+import java.util.*;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -44,6 +44,8 @@ public class OrderServiceImpl implements OrderService {
     private AddressBookMapper addressBookMapper;
     @Autowired
     private ShoppingCartMapper shoppingCartMapper;
+    @Autowired
+    WebSocketServer webSocketServer;
 
     @Override
     @Transactional
@@ -100,7 +102,15 @@ public class OrderServiceImpl implements OrderService {
         orders.setNumber(ordersPaymentDTO.getOrderNumber());
         orders.setUserId(BaseContext.getCurrentId());
         orders.setCheckoutTime(LocalDateTime.now());
-        orderMapper.update(orders);
+        Integer update = orderMapper.update(orders);
+        if (update != null && update >=1 ) {
+            Map map = new HashMap();
+            map.put("tupe", 1);
+            map.put("orderId", orders.getId());
+            map.put("content", orders.getNumber());
+            String jsonString = JSON.toJSONString(map);
+            webSocketServer.sendToAllClient(jsonString);
+        }
         return new OrderPaymentVO();
     }
 
