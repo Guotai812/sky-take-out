@@ -8,6 +8,8 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Mapper
@@ -33,4 +35,7 @@ public interface OrderMapper {
 
     @Select("select * from orders where status = 4 and order_time < now() - interval 1 hour")
     List<Orders> queryInDelivery();
+
+    @Select("select amount from orders where status = 5 and order_time between #{beginTime} and #{endTime}")
+    List<Double> queryTurnover(LocalDateTime beginTime, LocalDateTime endTime);
 }
