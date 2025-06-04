@@ -11,7 +11,7 @@ A comprehensive Spring Boot-based back-end for a restaurant management applicati
 3. [Features](#features)
 4. [API Overview](#api-overview)
 5. [Directory Structure](#directory-structure)
-6. 
+
 ---
 
 ## Project Structure
