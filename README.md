@@ -2,7 +2,7 @@
 
 A comprehensive Spring Boot-based back-end for a restaurant management application (“Sky Take Out”). This multi-module Maven project provides RESTful APIs for managing employees, users, dishes, set meals, orders, shopping carts, and reports, featuring JWT-based authentication, MyBatis integration, Redis caching, WebSocket notifications, and integrations with AliOSS and WeChat Pay.
 
----
+> **Note:** This was my first project after learning Java, and I followed a guided tutorial to help me understand the full workflow of building a back-end application with Spring Boot. Throughout the process, I applied what I learned to implement and refine features, which helped solidify my understanding of RESTful APIs, authentication, database operations, and overall system design. 
 
 ## Table of Contents
 
